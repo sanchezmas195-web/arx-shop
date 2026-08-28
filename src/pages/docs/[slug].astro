@@ -1,0 +1,7 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { products } from '../../data/products';
+export function getStaticPaths() { return products.map((product) => ({ params: { slug: product.slug }, props: { product } })); }
+const { product } = Astro.props;
+---
+<Layout title={`${product.name} docs | ARX SHOP`}><section class="page-intro"><div class="container"><span class="eyebrow">DOCS / {product.name.toUpperCase()}</span><h1>{product.name}</h1><p>{product.description}</p></div></section><section class="section"><div class="container docs-layout"><nav class="docs-nav" aria-label="Secciones de documentación"><span class="eyebrow">En esta guía</span>{product.docs.map((item) => <a href={`#${item.toLowerCase().replaceAll('.', '').replaceAll(' ', '-')}`}>{item}</a>)}</nav><article><div class="doc-block" id="instalación"><h3>Instalación</h3><p class="muted">Descarga el archivo del plugin desde tu panel de cliente y colócalo en la carpeta <code>/plugins</code> de tu servidor Paper.</p><pre class="code-block">plugins/{product.name.replace(' ', '')}.jar</pre></div>{product.docs.slice(1).map((item) => <div class="doc-block" id={item.toLowerCase().replaceAll('.', '').replaceAll(' ', '-')}><h3>{item}</h3><p class="muted">Contenido de demostración. Esta sección está preparada para la guía real de {product.name}.</p></div>)}</article></div></section></Layout>

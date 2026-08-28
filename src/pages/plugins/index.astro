@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { products } from '../../data/products';
+---
+<Layout title="Plugins | ARX SHOP" description="Catálogo de plugins premium para Minecraft de ARX | STUDIO.">
+  <section class="page-intro"><div class="container"><span class="eyebrow">02 / PLUGINS</span><h1>Software para mundos persistentes.</h1><p>Explora el catálogo de demostración de ARX SHOP. Cada ficha está preparada para documentar y vender un plugin real.</p></div></section>
+  <section class="section"><div class="container"><div class="product-grid">{products.map((product) => <ProductCard product={product} />)}</div></div></section>
+</Layout>

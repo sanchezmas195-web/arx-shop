@@ -1,0 +1,22 @@
+<div class="cart-drawer" id="cart-drawer" aria-hidden="true">
+  <aside class="cart-panel" aria-label="Carrito">
+    <div class="cart-head"><div><span class="eyebrow">ARX / CART</span><h3>Tu carrito</h3></div><button class="icon-btn" id="close-cart" aria-label="Cerrar carrito">&times;</button></div>
+    <div class="cart-items" id="cart-items"><p class="muted">Tu carrito está vacío.</p></div>
+    <div class="cart-total"><div class="product-meta"><span>Subtotal</span><strong id="cart-total">€0.00</strong></div><p class="notice" style="margin: 16px 0">El checkout está preparado para integrar un proveedor de pagos. No se procesan pagos reales en esta demo.</p><button class="btn btn-primary" id="checkout-button">Continuar al checkout</button></div>
+  </aside>
+</div>
+<script>
+  type CartItem = { slug: string; name: string; price: number };
+  const drawer = document.querySelector('#cart-drawer');
+  const itemsNode = document.querySelector('#cart-items');
+  const totalNode = document.querySelector('#cart-total');
+  const countNodes = document.querySelectorAll('[data-cart-count]');
+  const readCart = (): CartItem[] => JSON.parse(localStorage.getItem('arx-cart') || '[]');
+  const renderCart = () => { const items = readCart(); if (itemsNode) itemsNode.innerHTML = items.length ? items.map((item, index) => `<div class="cart-item"><div><strong>${item.name}</strong><small>Compra única</small></div><div><strong>€${item.price.toFixed(2)}</strong><button class="remove-item" data-remove="${index}">Eliminar</button></div></div>`).join('') : '<p class="muted">Tu carrito está vacío.</p>'; const total = items.reduce((sum, item) => sum + item.price, 0); if (totalNode) totalNode.textContent = `€${total.toFixed(2)}`; countNodes.forEach((node) => node.textContent = String(items.length)); };
+  const openCart = () => { drawer?.classList.add('is-open'); drawer?.setAttribute('aria-hidden', 'false'); renderCart(); };
+  document.querySelectorAll('[data-open-cart]').forEach((button) => button.addEventListener('click', openCart));
+  document.querySelector('#close-cart')?.addEventListener('click', () => { drawer?.classList.remove('is-open'); drawer?.setAttribute('aria-hidden', 'true'); });
+  drawer?.addEventListener('click', (event) => { if (event.target === drawer) drawer.classList.remove('is-open'); const target = event.target as HTMLElement; const index = target.dataset.remove; if (index !== undefined) { const items = readCart(); items.splice(Number(index), 1); localStorage.setItem('arx-cart', JSON.stringify(items)); renderCart(); } });
+  document.querySelector('#checkout-button')?.addEventListener('click', () => alert('Checkout pendiente: conecta aquí Stripe, PayPal u otro proveedor desde un backend seguro.'));
+  window.addEventListener('arx-cart-updated', renderCart); renderCart();
+</script>

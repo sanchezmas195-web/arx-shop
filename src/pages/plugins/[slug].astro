@@ -1,0 +1,12 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { products } from '../../data/products';
+export function getStaticPaths() { return products.map((product) => ({ params: { slug: product.slug }, props: { product } })); }
+const { product } = Astro.props;
+---
+<Layout title={`${product.name} | ARX SHOP`} description={product.description}>
+  <section class="section"><div class="container detail-layout"><div><div class="detail-visual" style={`--accent: ${product.accent}`} aria-label={`Logo de ${product.name}`}>ARX</div><div style="margin-top: 55px"><span class="eyebrow">{product.category} / PRODUCT DETAIL</span><h1>{product.name}</h1><p class="muted" style="font-size: 1.15rem">{product.description}</p><h2 style="margin-top: 55px">Características</h2><ul class="spec-list">{product.features.map((feature) => <li>{feature}</li>)}</ul><h2 style="margin-top: 55px">Changelog</h2><ul class="spec-list">{product.changelog.map((entry) => <li>{entry}</li>)}</ul></div></div><aside class="buy-panel"><span class="badge">DEMO PRODUCT</span><div class="price">€{product.price.toFixed(2)}</div><p class="muted">{product.license}. Sin pagos activos en esta demo.</p><button class="btn btn-primary" data-add-product data-slug={product.slug} data-name={product.name} data-price={product.price}>Comprar ahora</button><a class="btn btn-ghost" href="/discord">Comprar mediante Discord</a><ul class="spec-list" style="margin-top: 28px"><li><strong>Versiones compatibles</strong>{product.version}</li><li><strong>Dependencias</strong>{product.dependencies.join(', ')}</li><li><strong>Documentación</strong><a href={`/docs/${product.slug}`}>Ver guía del plugin -&gt;</a></li></ul></aside></div></section>
+</Layout>
+<script>
+  document.querySelector('[data-add-product]')?.addEventListener('click', (event) => { const button = event.currentTarget as HTMLElement; const items = JSON.parse(localStorage.getItem('arx-cart') || '[]'); items.push({ slug: button.dataset.slug, name: button.dataset.name, price: Number(button.dataset.price) }); localStorage.setItem('arx-cart', JSON.stringify(items)); window.dispatchEvent(new Event('arx-cart-updated')); button.textContent = 'Añadido al carrito'; });
+</script>

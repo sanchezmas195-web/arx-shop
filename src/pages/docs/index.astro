@@ -1,0 +1,5 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { products } from '../../data/products';
+---
+<Layout title="Documentación | ARX SHOP"><section class="page-intro"><div class="container"><span class="eyebrow">03 / DOCS</span><h1>Documentación que no estorba.</h1><p>Guías breves y operativas para instalar, configurar y mantener tus plugins.</p></div></section><section class="section"><div class="container docs-layout"><nav class="docs-nav" aria-label="Plugins"><span class="eyebrow">Plugins</span>{products.map((product) => <a href={`/docs/${product.slug}`}>{product.name}</a>)}</nav><div><h2>Centro de documentación</h2><p class="muted">Selecciona un plugin para consultar su guía. El contenido actual es demostrativo y está listo para sustituirse por documentación real.</p><div class="notice" style="margin-top: 30px">Las versiones y requisitos mostrados pertenecen al catálogo de demo.</div></div></div></section></Layout>

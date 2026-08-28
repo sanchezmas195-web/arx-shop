@@ -1,0 +1,19 @@
+---
+import type { Product } from '../data/products';
+const { product } = Astro.props as { product: Product };
+---
+<article class="product-card" style={`--accent: ${product.accent}`}>
+  <a href={`/plugins/${product.slug}`} aria-label={`Ver ${product.name}`}>
+    <div class="product-visual"><span class="product-symbol">ARX</span>{product.featured && <span class="badge">PREMIUM</span>}</div>
+    <div class="product-body">
+      <span class="eyebrow">{product.category}</span>
+      <h3>{product.name}</h3>
+      <p>{product.description}</p>
+      <div class="product-meta"><span>{product.version}</span><span>{product.license}</span></div>
+    </div>
+  </a>
+  <div class="product-body" style="padding-top: 0"><div class="product-footer"><span class="price">€{product.price.toFixed(2)}</span><div style="display: flex; gap: 8px"><a class="btn btn-ghost" href={`/plugins/${product.slug}`}>Ver producto <span aria-hidden="true">-&gt;</span></a><button class="btn btn-primary" data-add-product data-slug={product.slug} data-name={product.name} data-price={product.price}>Comprar</button></div></div></div>
+</article>
+<script>
+  document.querySelectorAll('[data-add-product]').forEach((button) => button.addEventListener('click', (event) => { const target = event.currentTarget as HTMLElement; const items = JSON.parse(localStorage.getItem('arx-cart') || '[]'); items.push({ slug: target.dataset.slug, name: target.dataset.name, price: Number(target.dataset.price) }); localStorage.setItem('arx-cart', JSON.stringify(items)); window.dispatchEvent(new Event('arx-cart-updated')); target.textContent = 'Añadido'; }));
+</script>

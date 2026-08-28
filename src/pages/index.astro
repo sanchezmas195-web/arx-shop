@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { products } from '../data/products';
+const featured = products.filter((product) => product.featured);
+---
+<Layout>
+  <section class="hero"><div class="container hero-content"><span class="eyebrow">ARX | STUDIO / OFFICIAL STORE</span><h1>Plugins que llevan tu servidor al siguiente nivel.</h1><p>Descubre los plugins premium desarrollados por ARX | STUDIO para servidores de Minecraft.</p><div class="hero-actions"><a class="btn btn-primary" href="/plugins">Ver plugins <span aria-hidden="true">-&gt;</span></a><a class="btn btn-ghost" href="/discord">Unirme al Discord</a></div></div><div class="hero-grid" aria-hidden="true"></div></section>
+  <section class="section"><div class="container"><div class="section-head"><div><span class="eyebrow">01 / CATALOG</span><h2>Plugins destacados</h2></div><p>Productos de demostración preparados para sustituirse por los plugins reales de ARX | STUDIO.</p></div><div class="product-grid">{featured.map((product) => <ProductCard product={product} />)}</div></div></section>
+  <section class="discord-band"><div class="container"><div><span class="eyebrow">ARX / COMMUNITY</span><h2>El soporte también forma parte del producto.</h2><p>Recibe soporte, novedades, actualizaciones y conoce los próximos proyectos.</p></div><a class="btn" href="/discord">Unirme al Discord <span aria-hidden="true">-&gt;</span></a></div></section>
+</Layout>
+<script>
+  document.querySelectorAll('[data-open-cart]').forEach((button) => button.addEventListener('click', () => document.querySelector('#cart-drawer')?.classList.add('is-open')));
+</script>
